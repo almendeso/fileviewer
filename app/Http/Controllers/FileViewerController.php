@@ -64,19 +64,34 @@ class FileViewerController extends Controller
             return response()->download($zipPath)->deleteFileAfterSend(true);
         }
 
-        $items = collect(scandir($currentDir))
-            ->reject(fn($i) => $i === '.' || $i === '..' || str_starts_with($i, '.'))
-            ->map(function ($item) use ($currentDir) {
-                $fullPath = $currentDir . '/' . $item;
+        $items = collect();
 
-                return [
-                    'name' => $item,
-                    'path' => $fullPath,
-                    'is_dir' => is_dir($fullPath),
-                    'size' => is_file($fullPath) ? filesize($fullPath) : 0,
-                    'mtime' => filemtime($fullPath),
-                ];
-            });
+        if (is_dir($currentDir) && is_readable($currentDir)) {
+
+            $list = @scandir($currentDir);
+
+            if ($list !== false) {
+
+                $items = collect($list)
+                    ->reject(fn($i) => $i === '.' || $i === '..' || str_starts_with($i, '.'))
+                    ->map(function ($item) use ($currentDir) {
+
+                        $fullPath = $currentDir . '/' . $item;
+
+                        return [
+                            'name'   => $item,
+                            'path'   => $fullPath,
+                            'is_dir' => is_dir($fullPath),
+                            'size'   => (is_file($fullPath) && is_readable($fullPath))
+                                ? filesize($fullPath)
+                                : null,
+                            'mtime'  => is_readable($fullPath)
+                                ? @filemtime($fullPath)
+                                : null,
+                        ];
+                    });
+            }
+        }
 
         $items = $items->sort(function ($a, $b) use ($sort, $order) {
 
