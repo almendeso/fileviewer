@@ -14,6 +14,6 @@ use App\Http\Controllers\FileViewerController;
 |
 */
 
-Route::get('/', [FileViewerController::class, 'index']);
+Route::get('/', [FileViewerController::class, 'index'])->name('index');
 
 Route::get('/backup', [FileViewerController::class, 'index']);

@@ -6,11 +6,11 @@
 <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
 </head>
 
-@include('css')
+@include('css.app')
 
 <body>
 
-<h2>📁 {{ $path ?: '/' }}</h2>
+@include('layouts.app')
 
 {{-- Botão Voltar --}}
 @if($path)
