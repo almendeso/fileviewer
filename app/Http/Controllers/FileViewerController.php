@@ -34,7 +34,7 @@ class FileViewerController extends Controller
             if ($target && $this->isAllowedPath($target, $allowedRoots)) {
                 $response = response()->download($target);
 
-                $response->headers->set('Access-Control-Allow-Origin', '*');
+                $response->headers->set('Access-Control-Allow-Origin', 'https://pgstatactivity.itarget.com.br');
                 $response->headers->set('Access-Control-Allow-Methods', 'GET, OPTIONS');
                 $response->headers->set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
                 $response->headers->set('Access-Control-Expose-Headers', 'Content-Disposition, Content-Length');
