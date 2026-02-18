@@ -32,7 +32,12 @@ class FileViewerController extends Controller
             $file = basename($request->get('download'));
             $target = realpath($currentDir . '/' . $file);
             if ($target && $this->isAllowedPath($target, $allowedRoots)) {
-                return response()->download($target);
+                return response()->download($target)->withHeaders([
+                    'Access-Control-Allow-Origin'  => '*',
+                    'Access-Control-Allow-Methods' => 'GET, OPTIONS',
+                    'Access-Control-Allow-Headers' => 'Content-Type, Authorization',
+                    'Access-Control-Expose-Headers'=> 'Content-Disposition, Content-Length',
+                ]);
             }
             abort(403);
         }
@@ -61,7 +66,13 @@ class FileViewerController extends Controller
             }
 
             $zip->close();
-            return response()->download($zipPath)->deleteFileAfterSend(true);
+            return response()->download($zipPath)
+                ->withHeaders([
+                    'Access-Control-Allow-Origin'  => '*',
+                    'Access-Control-Allow-Methods' => 'GET, OPTIONS',
+                    'Access-Control-Allow-Headers' => 'Content-Type, Authorization',
+                    'Access-Control-Expose-Headers'=> 'Content-Disposition, Content-Length',
+                ])->deleteFileAfterSend(true);
         }
 
         $items = collect();
