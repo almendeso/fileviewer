@@ -32,12 +32,14 @@ class FileViewerController extends Controller
             $file = basename($request->get('download'));
             $target = realpath($currentDir . '/' . $file);
             if ($target && $this->isAllowedPath($target, $allowedRoots)) {
-                return response()->download($target)->withHeaders([
-                    'Access-Control-Allow-Origin'  => '*',
-                    'Access-Control-Allow-Methods' => 'GET, OPTIONS',
-                    'Access-Control-Allow-Headers' => 'Content-Type, Authorization',
-                    'Access-Control-Expose-Headers'=> 'Content-Disposition, Content-Length',
-                ]);
+                $response = response()->download($target);
+
+                $response->headers->set('Access-Control-Allow-Origin', '*');
+                $response->headers->set('Access-Control-Allow-Methods', 'GET, OPTIONS');
+                $response->headers->set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+                $response->headers->set('Access-Control-Expose-Headers', 'Content-Disposition, Content-Length');
+
+                return $response;
             }
             abort(403);
         }
@@ -66,13 +68,15 @@ class FileViewerController extends Controller
             }
 
             $zip->close();
-            return response()->download($zipPath)
-                ->withHeaders([
-                    'Access-Control-Allow-Origin'  => '*',
-                    'Access-Control-Allow-Methods' => 'GET, OPTIONS',
-                    'Access-Control-Allow-Headers' => 'Content-Type, Authorization',
-                    'Access-Control-Expose-Headers'=> 'Content-Disposition, Content-Length',
-                ])->deleteFileAfterSend(true);
+            $response = response()->download($zipPath);
+            $response->deleteFileAfterSend(true);
+
+            $response->headers->set('Access-Control-Allow-Origin', 'https://pgstatactivity.itarget.com.br');
+            $response->headers->set('Access-Control-Allow-Methods', 'GET, OPTIONS');
+            $response->headers->set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+            $response->headers->set('Access-Control-Expose-Headers', 'Content-Disposition, Content-Length');
+
+            return $response;
         }
 
         $items = collect();
