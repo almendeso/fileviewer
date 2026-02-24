@@ -20,6 +20,7 @@ class FileViewerController extends Controller
         $path = $request->get('path', '');
         $sort = $request->get('sort', 'name');
         $order = $request->get('order', 'asc');
+        $search = $request->get('search'); // 🔍 NOVO
 
         $currentDir = realpath($baseDir . '/' . $path);
 
@@ -120,6 +121,15 @@ class FileViewerController extends Controller
                         ];
                     });
             }
+        }
+
+        /* =====================
+           🔍 FILTRO DE BUSCA (NOVO)
+        ====================== */
+        if ($search) {
+            $items = $items->filter(function ($item) use ($search) {
+                return stripos($item['name'], $search) !== false;
+            });
         }
 
         $items = $items->sort(function ($a, $b) use ($sort, $order) {

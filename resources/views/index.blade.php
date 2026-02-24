@@ -32,9 +32,41 @@
             ? 'desc'
             : 'asc';
 
-        return '<a href="?path='.$path.'&sort='.$column.'&order='.$newOrder.'">'.$label.'</a>';
+        $search = request('search');
+
+        $query = http_build_query([
+            'path'  => $path,
+            'sort'  => $column,
+            'order' => $newOrder,
+            'search'=> $search,
+        ]);
+
+        return '<a href="?'.$query.'">'.$label.'</a>';
     }
 @endphp
+
+{{-- Barra de busca --}}
+<br/>
+<div class="toolbar">
+    <form method="get" class="search-form">
+        <input type="hidden" name="path" value="{{ $path }}">
+        <input type="hidden" name="sort" value="{{ request('sort', 'name') }}">
+        <input type="hidden" name="order" value="{{ request('order', 'asc') }}">
+
+        <div class="search-group">
+            <input
+                type="text"
+                name="search"
+                class="search-input"
+                placeholder="Buscar..."
+                value="{{ request('search') }}"
+            >
+            <button type="submit" class="search-button">
+                Buscar
+            </button>
+        </div>
+    </form>
+</div>
 
 <div class="table-wrapper">
 <table>

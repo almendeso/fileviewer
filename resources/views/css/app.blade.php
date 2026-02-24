@@ -5,6 +5,44 @@ body {
     color: #000;
     margin: 20px;
 }
+.toolbar {
+    margin-bottom: 12px;
+}
+
+.search-group {
+    display: inline-flex;
+    align-items: center;
+}
+
+.search-input {
+    height: 38px;
+    padding: 0 14px;
+    border: 1px solid #d1d5db;
+    border-right: none;
+    border-radius: 20px 0 0 20px;
+    outline: none;
+    font-size: 14px;
+    min-width: 220px;
+}
+
+.search-input:focus {
+    border-color: #3b82f6;
+}
+
+.search-button {
+    height: 38px;
+    padding: 0 16px;
+    border: 1px solid #3b82f6;
+    background-color: #3b82f6;
+    color: #fff;
+    font-size: 14px;
+    border-radius: 0 20px 20px 0;
+    cursor: pointer;
+}
+
+.search-button:hover {
+    background-color: #2563eb;
+}
 
 h2 {
     font-size: 18px;
