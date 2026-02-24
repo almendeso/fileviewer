@@ -28,6 +28,20 @@ class FileViewerController extends Controller
             $path = '';
         }
 
+        if ($request->has('open')) {
+            $file = basename($request->get('open'));
+            $target = realpath($currentDir . '/' . $file);
+
+            if ($target && $this->isAllowedPath($target, $allowedRoots)) {
+                return response()->file($target, [
+                    // Garante que o navegador tente exibir, não baixar
+                    'Content-Disposition' => 'inline; filename="' . basename($target) . '"'
+                ]);
+            }
+
+            abort(403);
+        }       
+
         if ($request->has('download')) {
             $file = basename($request->get('download'));
             $target = realpath($currentDir . '/' . $file);

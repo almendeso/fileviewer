@@ -90,6 +90,14 @@
                        href="?path={{ $path }}&download={{ $item['name'] }}">
                         ⬇️
                     </a>
+                    {{-- Abrir em nova aba --}}
+                    <a class="icon"
+                    title="Abrir em nova aba"
+                    href="?path={{ $path }}&open={{ $item['name'] }}"
+                    target="_blank"
+                    rel="noopener">
+                        🔍
+                    </a>                    
                 </td>
             @endif
         </tr>
